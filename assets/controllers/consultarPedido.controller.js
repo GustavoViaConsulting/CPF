@@ -141,7 +141,6 @@ consultarPedido.controller("consultarPedido", [
           .consultarPedidos(urlPedido, tokenPedido, dados.pedidos[indice])
           .then(function (dados) {
             pedidos.push(dados);
-            console.log(pedidos);
           })
           .catch(function (error) {
             console.log(error);
