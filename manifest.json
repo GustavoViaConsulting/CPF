@@ -1,0 +1,44 @@
+{
+  "name": "CPF",
+  "author": {
+    "name": "Via Consulting",
+    "email": "gustavo.alves@viaconsulting.com.br"
+  },
+  "defaultLocale": "en",
+  "private": true,
+  "location": {
+    "support": {
+      "nav_bar": {
+        "url": "assets/views/consultarPedido.html",
+        "flexible": true
+      }
+    }
+  },
+  "version": "1.0.0",
+  "frameworkVersion": "2.0",
+  "parameters": [
+    {
+      "name": "urlCpf",
+      "type": "text",
+      "default": "https://YYY.YYYY.com.br"
+    },
+    {
+      "name": "tokenCpf",
+      "type": "text",
+      "secure": true,
+      "default": "XXXXXXXXXXXXXXX"
+    },
+    {
+      "name": "urlPedido",
+      "type": "text",
+      "default": "https://YYY.YYYY.com.br"
+    },
+    {
+      "name": "tokenPedido",
+      "type": "text",
+      "secure": true,
+      "default": "XXXXXXXXXXXXXXX"
+    }
+  ]
+
+}

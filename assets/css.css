@@ -1,0 +1,106 @@
+#box {
+    padding: 2% 15% 2% 15%;
+}
+
+#center-text{
+    text-align: center;
+}
+
+#button-arrows-angle-expand{
+    border: 0;
+    background-color: transparent;
+    width: 1.7em;
+    height: 1.7em;
+    
+    &:hover{
+        background-color: rgba(0,0,0,.10);
+        border-radius: 100%;
+    }
+
+    &:focus{
+        background-color: rgba(0,0,0,.10);
+        border-radius: 100%;
+    }
+}
+
+#button{
+    margin-top: 1em;
+}
+
+#info-title-user{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.div-button{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.div-button, .close{
+    color: red;
+}
+
+.table{
+    text-align: center;
+}
+
+.card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.card-container {
+    z-index: 10000;
+}
+
+.info-box {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+.info-box, .info-user {
+    margin-bottom: 2em;
+}
+  
+.info-title, .ticket-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+  
+.info-text {
+    margin: 0;
+}
+  
+.ticket-box {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+  
+.ticket-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+  
+.ticket-list li {
+    margin-bottom: 5px;
+}
+
+.div-info{
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 1em;
+}

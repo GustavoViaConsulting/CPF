@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../css.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/npm/@zendeskgarden/css-bedrock@7.0.21,npm/@zendeskgarden/css-utilities@4.3.0" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+
+<body>
+  <div ng-app="consultarPedido" ng-controller="consultarPedido" id="box">
+
+    <form>
+      <fieldset ng-disabled="disableInputs">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="center-text" placeholder="Pesquisar por CPF"
+            ng-model="valorDeBusca" aria-label="Pesquisar por Número do Pedido" aria-describedby="button-addon2" />
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2" ng-click="consultarCPF()"
+            type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-search"
+              viewBox="0 0 16 16">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+          </button>
+        </div>
+      </fieldset>
+    </form>
+    <p id="center-text">{{ mensagem }}</p>
+
+
+    <div class="info-box info-user">
+      <h5 class="info-title" id="info-title-user">Informações do Cliente</h5>
+      <div class="div-info">
+        <p class="info-text"><strong>Nome: </strong>{{ dadosCliente.nome }}</p>
+        <p class="info-text"><strong>Email:</strong> {{ dadosCliente.email }}</p>
+        <p class="info-text"><strong>CPF:</strong> {{ dadosCliente.cpf }}</p>
+        <p class="info-text"><strong>Telefone:</strong> {{ dadosCliente.celular }}</p>
+      </div>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+        <th scope="col"><strong>Nr Pedido</strong></th>
+        <th scope="col"><strong>Nome</strong></th>
+        <th scope="col"><strong>Data</strong></th>
+        <th scope="col"><strong>Origem</strong></th>
+        <th scope="col"><strong>Valor</strong></th>
+        <th scope="col"></th>
+        </tr>
+      </thead>
+      <tr ng-repeat="pedido in getItensPagina() | orderBy:'data':true">
+        <th scope="row">{{ pedido.number }}</th>
+        <td>{{ dadosCliente.nome }}</td>
+        <td>{{ formatarData(pedido.data) }}</td>
+        <td>{{ pedido.trasnportadora }}</td>
+        <td>{{ pedido.value }}</td>
+        <td>
+          <button id="button-arrows-angle-expand" ng-click="mostrarPedido(pedido)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+              class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z" />
+            </svg>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <nav aria-label="Navegação de página">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" ng-class="{ 'disabled': paginaAtual === 1 }">
+          <a class="page-link" href="#" aria-label="Anterior" ng-click="paginaAnterior()">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" ng-repeat="pagina in getPaginas()">
+          <a class="page-link" href="#" ng-click="mudarPagina(pagina)">{{ pagina }}</a>
+        </li>
+        <li class="page-item" ng-class="{ 'disabled': paginaAtual === getTotalPaginas() }">
+          <a class="page-link" href="#" aria-label="Próxima" ng-click="proximaPagina()">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="card-overlay" ng-show="mostrarCard">
+      <div class="card card-container" style="width: 45rem;">
+        <div class="card-body">
+          <div class="div-button"><button type="button" class="close" aria-label="Fechar" ng-click="FecharPedido()">
+              <span aria-hidden="true">&times;</span>
+            </button></div>
+          <div>
+            <div>
+              <div class="info-box">
+                <h6 class="info-title">Informações do Pedido</h6>
+                <p class="info-text">Id: {{ pedidoSelecionado.number }}</p>
+                <p class="info-text">Data: {{ formatarData(pedidoSelecionado.data) }}</p>
+                <p class="info-text">Status: {{ pedidoSelecionado.status }}</p>
+                <p class="info-text">Transportadora: {{ pedidoSelecionado.source }}</p>
+                <p class="info-text">Canal de Compra: {{ pedidoSelecionado.status }}</p>
+                <p class="info-text">Obs do Cliente: {{ pedidoSelecionado.description }}</p>
+              </div>
+            </div>
+
+            <div class="ticket-box">
+              <h6 class="ticket-title">Tickets Relacionados</h6>
+              <ul class="ticket-list">
+                <li>Nenhum ticket relacionado</li>
+              </ul>
+            </div>
+            <div class="div-button"><button class="btn btn-danger" id="button"
+                ng-click="cancelarPedido(pedidoSelecionado)">Cancelar
+                Pedido</button></div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js"></script>
+    <script>
+      var cliente = ZAFClient.init();
+      cliente.invoke('resize', { width: '100%', height: '200px' });
+    </script>
+
+    <script src="../app.js"></script>
+    <script src="../controllers/consultarPedido.controller.js"></script>
+    <script src="../services/vtex.service.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </div>
+</body>
+
+</html>
