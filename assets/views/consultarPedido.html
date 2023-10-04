@@ -32,8 +32,6 @@
         </div>
       </fieldset>
     </form>
-    <p id="center-text">{{ mensagem }}</p>
-
 
     <div class="info-box info-user">
       <h5 class="info-title" id="info-title-user">Informações do Cliente</h5>
@@ -105,8 +103,8 @@
                 <p class="info-text">Id: {{ pedidoSelecionado.number }}</p>
                 <p class="info-text">Data: {{ formatarData(pedidoSelecionado.data) }}</p>
                 <p class="info-text">Status: {{ pedidoSelecionado.status }}</p>
-                <p class="info-text">Transportadora: {{ pedidoSelecionado.source }}</p>
-                <p class="info-text">Canal de Compra: {{ pedidoSelecionado.status }}</p>
+                <p class="info-text">Transportadora: {{ pedidoSelecionado.trasnportadora }}</p>
+                <p class="info-text">Canal de Compra: {{ pedidoSelecionado.source }}</p>
                 <p class="info-text">Obs do Cliente: {{ pedidoSelecionado.description }}</p>
               </div>
             </div>
