@@ -4,12 +4,22 @@ consultarPedido.controller("consultarPedido", [
   function ($scope, vtexService) {
     var cliente = ZAFClient.init();
     var itensPorPagina = 10;
-    var botaoHabilitado = false;
     var pedidos = [];
-    var tokenCPF;
     var urlCPF;
-    var tokenPedido;
     var urlPedido;
+    var errors = {
+      consultarCPF: "Erro ao consultar CPF",
+      consultarCPFInvalido: "CPF inválido",
+      consultarPedidos: "Erro ao consultar pedidos",
+    };
+    var traducao = {
+      IN_PROGRESS: "Em Progresso",
+      PENDING: "Pendente",
+      CLOSED: "Fechado",
+      CANCELLED: "Cancelado",
+      ACTIVE: "Ativo",
+      RESOLVED: "Resolvido",
+    };
 
     $scope.dadosCliente = "";
     $scope.valorDeBusca = "";
@@ -20,9 +30,7 @@ consultarPedido.controller("consultarPedido", [
 
     cliente.metadata().then(function (parameters) {
       urlCPF = parameters.settings.urlCpf;
-      tokenCPF = parameters.settings.tokenCpf;
       urlPedido = parameters.settings.urlPedido;
-      tokenPedido = parameters.settings.tokenPedido;
     });
 
     // Função para obter a lista de números das páginas
@@ -120,31 +128,40 @@ consultarPedido.controller("consultarPedido", [
       if (validarCPF($scope.valorDeBusca)) {
         $scope.mensagem = "";
         vtexService
-          .consultarCPF(urlCPF, tokenCPF, $scope.valorDeBusca.replace(/[^\d]+/g, ""))
+          .consultarCPF(urlCPF, $scope.valorDeBusca.replace(/[^\d]+/g, ""))
           .then(function (dados) {
-            consultarPedidos(dados);
+            // Chamada da função recursiva
+            pedidos = [];
+            consultarPedidos(dados, 0, []);
             $scope.dadosCliente = dados;
           })
           .catch(function (error) {
             console.log(error);
+            mensagem(errors.consultarCPF, "error");
           });
       } else {
-        $scope.mensagem = "CPF inválido.";
+        $scope.mensagem = "";
+        mensagem(errors.consultarCPFInvalido, "error");
       }
     };
 
     // Função para consultar os pedidos
-    function consultarPedidos(dados) {
-      pedidos = [];
-      for (let indice = 0; indice < dados.pedidos.length; indice++) {
+    function consultarPedidos(dados, indice) {
+      if (indice < dados.pedidos.length) {
         vtexService
-          .consultarPedidos(urlPedido, tokenPedido, dados.pedidos[indice])
-          .then(function (dados) {
-            pedidos.push(dados);
+          .consultarPedidos(urlPedido, dados.pedidos[indice])
+          .then(function (dadosPedido) {
+            dadosPedido.status = traduzirStatus(dadosPedido.status);
+            pedidos.push(dadosPedido);
+
+            consultarPedidos(dados, indice + 1);
           })
           .catch(function (error) {
             console.log(error);
+            mensagem(errors.consultarPedidos, "error");
+            consultarPedidos(dados, indice + 1);
           });
+      } else {
       }
     }
 
@@ -164,5 +181,13 @@ consultarPedido.controller("consultarPedido", [
       }
       $scope.mostrarCard = false;
     };
+
+    function mensagem(mensagem, tipo) {
+      cliente.invoke("notify", "<b>" + mensagem + "</b>", tipo, 3000);
+    }
+
+    function traduzirStatus(statusOriginal) {
+      return traducao[statusOriginal] || statusOriginal;
+    }
   },
 ]);
