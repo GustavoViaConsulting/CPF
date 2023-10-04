@@ -5,16 +5,19 @@
     "$q",
     function ($q) {
       var client = ZAFClient.init();
+
       return {
-        consultarCPF: function (url, token, cpf) {
+        consultarCPF: function (url, cpf) {
           var deferred = $q.defer();
-          let options = {
+          var options = {
             url: url + cpf,
             type: "GET",
-            contentType: "application/json",
+            cors: false,
             headers: {
-              "x-api-key": token,
+              "x-api-key": "{{setting.tokenCpf}}",
+              "Content-Type": "application/json",
             },
+            // secure: true
           };
           client
             .request(options)
@@ -27,15 +30,17 @@
           return deferred.promise;
         },
 
-        consultarPedidos: function (url, token, idPedido) {
+        consultarPedidos: function (url, idPedido) {
           var deferred = $q.defer();
           let options = {
             url: url + idPedido,
             type: "GET",
-            contentType: "application/json",
+            cors: false,
             headers: {
-              "x-api-key": token,
+              "x-api-key": "{{setting.tokenPedido}}",
+              "Content-Type": "application/json",
             },
+            // secure: true
           };
           client
             .request(options)
