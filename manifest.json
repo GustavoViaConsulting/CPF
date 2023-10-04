@@ -16,11 +16,16 @@
   },
   "version": "1.0.0",
   "frameworkVersion": "2.0",
+  "domainWhitelist": [
+    "https://viaconsulting6899.zendesk.com",
+    "https://v4c1btaq78.execute-api.us-east-1.amazonaws.com",
+    "https://n0e6xtbvqa.execute-api.us-east-1.amazonaws.com"
+  ],
   "parameters": [
     {
       "name": "urlCpf",
       "type": "text",
-      "default": "https://YYY.YYYY.com.br"
+      "default": "https://n0e6xtbvqa.execute-api.us-east-1.amazonaws.com/default/flordemaio-zendesk-mock?cpf="
     },
     {
       "name": "tokenCpf",
@@ -31,7 +36,7 @@
     {
       "name": "urlPedido",
       "type": "text",
-      "default": "https://YYY.YYYY.com.br"
+      "default": "https://v4c1btaq78.execute-api.us-east-1.amazonaws.com/default/allShopping?idShopping="
     },
     {
       "name": "tokenPedido",
